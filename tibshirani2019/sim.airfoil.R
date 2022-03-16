@@ -1,6 +1,7 @@
 ## Load the airfoil data
 dat = read.table("airfoil.txt")
 dim(dat)
+head(dat)
 colnames(dat) = c("Frequency",
                   "Angle",
                   "Chord",
@@ -30,10 +31,11 @@ wsample = function(wts, frac=0.25) {
 
 ## Run the simulation
 library(randomForest)
+# devtools::install("conformalInference/")
 library("conformalInference")
 
 set.seed(0)
-R = 5000
+R = 50
 cov.mat = len.mat = matrix(0,R,8)
 beta.mat1 = beta.mat2 = matrix(0,R,p+1)
 ssize = numeric(R)
@@ -143,5 +145,6 @@ for (r in 1:R) {
   len.mat[r,8] = median(out8$up - out8$lo)
 }
 cat("\n")
+# 为什么要跑 5000 次。
 
 save(list=ls(), file="rda/airfoil_sim.rda")
